@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:bg-color="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Exercise - Basket with Products</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+    <link href="../static/css/spring-core.css"
+          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+</head>
+<body>
+<div class="container">
+    <div th:if="${not #lists.isEmpty(products)}">
+        <h2>Product List</h2>
+        <table class="table table-striped" border="1">
+            <tr>
+                <th>Id</th>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Shipping</th>
+                <th>Remove</th>
+            </tr>
+            <tr th:each="product : ${products}">
+                <td th:text="${product.id}"></td>
+                <td th:text="${product.productName}"></td>
+                <td th:text="${product.price}"></td>
+                <td th:text="${#numbers.formatDecimal(5.0*product.shippingWeightFactor.floatValue(),0,2)}"></td>
+                <td><a th:href="${'/product/delete/' + product.id}">Remove Item</a> </td>
+            </tr>
+            <tr bgcolor="#808080">
+
+                <td colspan ="2">Total:</td>
+                <td th:text="${total}"></td>
+                <td th:text="${totalShipping}" ></td>
+                <td></td>
+
+            </tr>
+            <tr bgcolor="#808080">
+                <td colspan="2">Total Cost With Shipping:</td>
+                <td th:text="${total + totalShipping}" colspan="3"></td>
+            </tr>
+        </table>
+
+        <p  style="background-color:yellow" th:text="${discount ?  'You exceed the 100 euros of shopping. So we are offer to you a discount of 10%! ' : ''}" ></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <a href="/product/new">Add Product to Basket</a>
+    </div>
+</div>
+</body>
+</html>
